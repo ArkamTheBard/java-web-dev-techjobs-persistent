@@ -68,7 +68,7 @@ public class HomeController {
         }
 //        Employer selectedEmployer = (Employer) employerRepository.findById(employerId).get();
 
-
+        jobRepository.save(newJob);
 
         return "redirect:";
     }
