@@ -55,7 +55,9 @@ public class HomeController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
-            return "add";
+            model.addAttribute("employers", employerRepository.findAll());
+            model.addAttribute("skills", skillRepository.findAll());
+            return "/add";
         }
 
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
