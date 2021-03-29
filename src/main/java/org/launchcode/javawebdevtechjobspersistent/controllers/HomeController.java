@@ -51,12 +51,15 @@ public class HomeController {
 
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
+                                       Errors errors, Model model, @RequestParam int employerId, @RequestParam(required = false) List<Integer> skills) {
 
-        if (errors.hasErrors()) {
+        if (errors.hasErrors() || skills == null || skills.isEmpty()) {
             model.addAttribute("title", "Add Job");
             model.addAttribute("employers", employerRepository.findAll());
             model.addAttribute("skills", skillRepository.findAll());
+            if(skills == null || skills.isEmpty()){
+                model.addAttribute("skillError", "Must select at least 1 skill");
+            }
             return "/add";
         }
 
@@ -64,12 +67,9 @@ public class HomeController {
         newJob.setSkills(skillObjs);
 
         Optional optEmployer = employerRepository.findById(employerId);
-        if (optEmployer.isPresent()){
-            Employer employer = (Employer) optEmployer.get();
-            model.addAttribute("employer", employer);
-            newJob.setEmployer(employer);
-        }
-//        Employer selectedEmployer = (Employer) employerRepository.findById(employerId).get();
+        Employer employer = (Employer) optEmployer.get();
+        model.addAttribute("employer", employer);
+        newJob.setEmployer(employer);
 
         jobRepository.save(newJob);
 

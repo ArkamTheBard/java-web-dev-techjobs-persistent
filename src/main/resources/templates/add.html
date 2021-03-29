@@ -31,6 +31,7 @@
             <label th:text="${skill.name}"></label>
         </th:block>
         <a th:href="@{'/skills/add'}">Add Skills</a>
+        <div><span th:text="${skillError}" class="error"></span></div>
     </div>
 
     <input type="submit" value="Add Job" />
